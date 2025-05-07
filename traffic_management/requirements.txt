@@ -1,0 +1,38 @@
+# Data processing and analysis
+numpy
+pandas
+scipy
+
+# Machine Learning and Deep Learning
+scikit-learn
+tensorflow
+torch
+keras
+
+# Reinforcement Learning
+gym
+stable-baselines3
+
+# Data streaming and processing
+kafka-python
+pyspark==3.5.0
+
+# Time series analysis
+statsmodels
+
+# API and web framework
+fastapi
+uvicorn
+pydantic
+
+# Visualization
+matplotlib
+seaborn
+plotly
+
+# Testing
+pytest
+
+# Utilities
+tqdm
+python-dotenv

@@ -1,0 +1,143 @@
+{
+  "system": {
+    "name": "AI-Powered Urban Traffic Management",
+    "version": "0.1.0",
+    "description": "End-to-end AI/ML system for urban traffic management"
+  },
+  "data": {
+    "sources": {
+      "camera": {
+        "enabled": true,
+        "input_path": "data/raw/camera",
+        "processed_path": "data/processed/camera",
+        "format": "video",
+        "sampling_rate": 5
+      },
+      "sensors": {
+        "enabled": true,
+        "input_path": "data/raw/sensors",
+        "processed_path": "data/processed/sensors",
+        "format": "csv",
+        "sampling_rate": 1
+      },
+      "gps": {
+        "enabled": true,
+        "input_path": "data/raw/gps",
+        "processed_path": "data/processed/gps",
+        "format": "json",
+        "sampling_rate": 1
+      }
+    },
+    "kafka": {
+      "bootstrap_servers": "localhost:9092",
+      "topics": {
+        "camera": "traffic_camera_data",
+        "sensors": "traffic_sensor_data",
+        "gps": "traffic_gps_data",
+        "predictions": "traffic_predictions",
+        "signals": "traffic_signals",
+        "routes": "traffic_routes"
+      }
+    },
+    "database": {
+      "type": "postgresql",
+      "host": "localhost",
+      "port": 5432,
+      "username": "traffic_user",
+      "password": "YOUR_PASSWORD",
+      "database": "traffic_management"
+    }
+  },
+  "models": {
+    "traffic_prediction": {
+      "type": "lstm",
+      "epochs": 100,
+      "batch_size": 32,
+      "learning_rate": 0.001,
+      "sequence_length": 24,
+      "hidden_units": 128,
+      "dropout_rate": 0.2,
+      "save_path": "models/traffic_prediction",
+      "evaluation_metrics": ["mae", "rmse", "mape"]
+    },
+    "signal_control": {
+      "type": "dqn",
+      "learning_rate": 0.0001,
+      "discount_factor": 0.99,
+      "exploration_rate": 0.1,
+      "exploration_decay": 0.995,
+      "min_exploration_rate": 0.01,
+      "batch_size": 64,
+      "memory_size": 10000,
+      "target_update_frequency": 1000,
+      "save_path": "models/signal_control",
+      "reward_function": {
+        "queue_length_weight": -0.5,
+        "waiting_time_weight": -0.3,
+        "throughput_weight": 0.2
+      }
+    },
+    "route_optimization": {
+      "algorithm": "dijkstra",
+      "update_frequency": 60,
+      "max_alternatives": 3,
+      "congestion_threshold": 0.7,
+      "save_path": "models/route_optimization"
+    }
+  },
+  "api": {
+    "host": "0.0.0.0",
+    "port": 8000,
+    "debug": false,
+    "endpoints": {
+      "traffic_status": "/api/v1/traffic/status",
+      "traffic_prediction": "/api/v1/traffic/prediction",
+      "signal_control": "/api/v1/signals/control",
+      "route_optimization": "/api/v1/routes/optimize"
+    },
+    "rate_limit": {
+      "enabled": true,
+      "requests_per_minute": 100
+    },
+    "authentication": {
+      "enabled": true,
+      "type": "jwt",
+      "secret_key": "YOUR_SECRET_KEY"
+    }
+  },
+  "simulation": {
+    "duration": 3600,
+    "time_step": 1.0,
+    "map_file": "data/maps/city_network.osm",
+    "vehicle_count": 1000,
+    "random_seed": 42,
+    "intersections": {
+      "count": 20,
+      "file": "data/simulation/intersections.json"
+    },
+    "visualization": {
+      "enabled": true,
+      "update_frequency": 1.0,
+      "save_video": true,
+      "video_path": "visualization/simulation_video.mp4"
+    }
+  },
+  "evaluation": {
+    "metrics": ["travel_time", "congestion", "emissions", "throughput"],
+    "baseline_method": "fixed_time_signals",
+    "test_scenarios": [
+      "morning_rush_hour",
+      "evening_rush_hour",
+      "normal_day",
+      "special_event"
+    ],
+    "output_path": "evaluation/results"
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "logs/traffic_management.log",
+    "rotate": true,
+    "max_size": 10485760,
+    "backup_count": 5
+  }
+}
